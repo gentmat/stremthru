@@ -160,6 +160,24 @@ var builtInTemplates = func() map[string]stremio_transformer.StreamTemplateBlob 
 		Description: `{{.Raw.Description}}`,
 	}
 
+	templates[BUILTIN_TRANSFORMER_ENTITY_ID_PREFIX+"MarounCustom"] = stremio_transformer.StreamTemplateBlob{
+		Name: strings.TrimSpace(`
+{{if .Store.IsCached}}⚡️ {{end}}[MAT]
+Maroun Server
+{{.Resolution}}
+`),
+		Description: strings.TrimSpace(`
+{{if ne .Quality ""}}💿 {{.Quality}} {{end}}{{if ne .Codec ""}}🎞️ {{.Codec}}{{end}}
+{{if ne (len .HDR) 0}}📺 {{str_join .HDR " "}} {{end}}{{if or (gt (len .Audio) 0) (gt (len .Channels) 0)}} 🎧 {{str_join (slice_concat .Audio .Channels) " "}}{{end}}
+{{if ne .Size ""}}📦 {{.Size}} {{end}}{{if ne .Site ""}}🔗 {{.Site}}{{end}}{{if ne (len .Languages) 0}}
+🌐 {{lang_join .Languages " " "emoji"}}
+{{- end}}{{if ne .File.Name ""}}
+📄 {{.File.Name}}{{else if ne .TTitle ""}}
+📁 {{.TTitle}}
+{{end}}
+`),
+	}
+
 	return templates
 }()
 

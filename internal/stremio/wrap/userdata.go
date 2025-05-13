@@ -392,6 +392,19 @@ func getUserData(r *http.Request) (*UserData, error) {
 			} else {
 				data.template = template
 			}
+		} else {
+			// Use MarounCustom template when none is specified
+			if template, err := getTemplate(BUILTIN_TRANSFORMER_ENTITY_ID_PREFIX + "MarounCustom"); err != nil {
+				LogError(r, fmt.Sprintf("failed to fetch MarounCustom template, falling back to Default"), err)
+				// Fall back to default if MarounCustom fails
+				if template, err := getTemplate(BUILTIN_TRANSFORMER_ENTITY_ID_PREFIX + "Default"); err != nil {
+					LogError(r, fmt.Sprintf("failed to fetch Default template"), err)
+				} else {
+					data.template = template
+				}
+			} else {
+				data.template = template
+			}
 		}
 	}
 
